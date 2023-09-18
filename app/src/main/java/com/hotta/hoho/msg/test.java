@@ -4,5 +4,7 @@ public class test {
     public test() {
         System.out.println("ㅋㅋ");
         System.out.println("master");
+        System.out.println("실험");
+
     }
 }
