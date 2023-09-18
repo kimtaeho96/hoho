@@ -1,4 +1,3 @@
-diff a/app/src/main/java/com/hotta/hoho/msg/FireBaseService.kt b/app/src/main/java/com/hotta/hoho/msg/FireBaseService.kt	(rejected hunks)
 @@ -23,6 +23,7 @@
          super.onNewToken(token)
      }
