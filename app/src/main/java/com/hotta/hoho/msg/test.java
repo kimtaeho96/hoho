@@ -9,6 +9,8 @@ public class test {
         System.out.println("충돌해결");
         System.out.println("원격저장소");
         System.out.println("UTF-8");
+        System.out.println("push추가");
+        System.out.println("push추가");
 
 
     }
