@@ -7,6 +7,8 @@ public class test {
         System.out.println("실험");
         System.out.println("충돌");
         System.out.println("충돌해결");
+        System.out.println("원격저장소");
+
 
     }
 }
