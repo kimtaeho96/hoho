@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav"
+    app:startDestination="@id/homeFragment2">
+
+    <fragment
+        android:id="@+id/homeFragment1"
+        android:name="com.hotta.hoho.view.main.HomeFragment1"
+        android:label="fragment_home1"
+        tools:layout="@layout/fragment_home1" >
+        <action
+            android:id="@+id/action_homeFragment1_to_homeFragment2"
+            app:destination="@id/homeFragment2" />
+        <action
+            android:id="@+id/action_homeFragment1_to_homeFragment3"
+            app:destination="@id/homeFragment3" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment2"
+        android:name="com.hotta.hoho.view.main.HomeFragment2"
+        android:label="fragment_home2"
+        tools:layout="@layout/fragment_home2" >
+        <action
+            android:id="@+id/action_homeFragment2_to_homeFragment3"
+            app:destination="@id/homeFragment3" />
+        <action
+            android:id="@+id/action_homeFragment2_to_homeFragment1"
+            app:destination="@id/homeFragment1" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment3"
+        android:name="com.hotta.hoho.view.main.HomeFragment3"
+        android:label="HomeFragment3" >
+        <action
+            android:id="@+id/action_homeFragment3_to_homeFragment2"
+            app:destination="@id/homeFragment2" />
+        <action
+            android:id="@+id/action_homeFragment3_to_homeFragment22"
+            app:destination="@id/homeFragment2" />
+        <action
+            android:id="@+id/action_homeFragment3_to_homeFragment1"
+            app:destination="@id/homeFragment1" />
+    </fragment>
+</navigation>

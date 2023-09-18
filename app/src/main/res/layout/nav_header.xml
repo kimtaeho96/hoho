@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nav_Header"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lavender"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <ImageView
+        android:id="@+id/nav_Img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/profile_img" />
+
+    <TextView
+        android:id="@+id/nav_Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="이름"
+        android:textColor="@color/black"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/nav_Email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(이메일)"
+        android:textColor="@color/black"
+        android:textSize="16dp" />
+
+
+</LinearLayout>

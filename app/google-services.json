@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "582486063004",
+    "project_id": "hoho-820ce",
+    "storage_bucket": "hoho-820ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:582486063004:android:f343f9b0ede55dff593a59",
+        "android_client_info": {
+          "package_name": "com.hotta.hoho"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "582486063004-i0oaehkp6p4ic61s54t10tdr6budktod.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt9vkLLGRnJaRNZtVwlDfAwx6VPFkExYY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "582486063004-i0oaehkp6p4ic61s54t10tdr6budktod.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
