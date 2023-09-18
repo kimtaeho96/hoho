@@ -23,6 +23,7 @@ class FireBaseService : FirebaseMessagingService() {
         super.onNewToken(token)
     }
 
+    //주석추가
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
