@@ -1,5 +1,6 @@
 package com.hotta.hoho.network.api
 
+import com.hotta.hoho.Const_Ho
 import com.hotta.hoho.network.model.*
 import retrofit2.Response
 import retrofit2.http.GET
@@ -82,7 +83,24 @@ interface Api {
         @Query("with_genres") genreId: String,
         @Query("language") language: String = "ko",
 
-    ): PopularMovieResponse
+        ): PopularMovieResponse
+
+
+    // 특정 장르의 영화 가져오기
+    @GET("person/{person_id}")
+    suspend fun getPeopleDetail(
+        @Path("person_id") id: Int,
+        @Query("api_key") key: String = Const_Ho.MOVIE_API_KEY,
+
+    ): PeopleDetailResponse
+
+    // 특정 장르의 영화 가져오기
+    @GET("person/{person_id}/movie_credits")
+    suspend fun getPeopleMovie(
+        @Path("person_id") id: Int,
+        @Query("api_key") key: String = Const_Ho.MOVIE_API_KEY,
+
+        ): PeopleMovieResponse
 
 
 }

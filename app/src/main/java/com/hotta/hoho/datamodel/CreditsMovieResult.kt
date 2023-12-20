@@ -7,6 +7,8 @@ data class CreditsMovieResult(
     val adult: Boolean,
     @SerializedName("gender")
     val gender: Int,
+    @SerializedName("id")
+    val id: Int,
     @SerializedName("known_for_department")
     val known_for_department: String,
     @SerializedName("name")

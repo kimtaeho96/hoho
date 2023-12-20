@@ -32,6 +32,8 @@ class NetworkRepository {
     suspend fun getPopularTv(key: String) = client2.getPopularTv(key)
     suspend fun getMoviesByGenre(key: String, genre: String) = client2.getMoviesByGenre(key, genre)
 
+    suspend fun getPeopleDetail(id: Int) = client2.getPeopleDetail(id)
+    suspend fun getPeopleMovie(id: Int) = client2.getPeopleMovie(id)
     //kakao api
     suspend fun getKakaoMapSearch(key: String, query: String, x: String, y: String, radius: Int) =
         kakaoClient.getSearchKeyword(key, query, x, y, radius)
