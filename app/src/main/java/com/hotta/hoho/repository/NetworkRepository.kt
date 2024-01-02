@@ -34,6 +34,8 @@ class NetworkRepository {
 
     suspend fun getPeopleDetail(id: Int) = client2.getPeopleDetail(id)
     suspend fun getPeopleMovie(id: Int) = client2.getPeopleMovie(id)
+    suspend fun getPeopleImg(id: Int) = client2.getPeopleImg(id)
+
     //kakao api
     suspend fun getKakaoMapSearch(key: String, query: String, x: String, y: String, radius: Int) =
         kakaoClient.getSearchKeyword(key, query, x, y, radius)

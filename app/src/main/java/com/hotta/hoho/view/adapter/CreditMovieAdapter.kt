@@ -30,7 +30,6 @@ class CreditMovieAdapter(val context: Context, val item: List<CreditsMovieResult
             Log.d("actorid", item.id.toString())
             Glide.with(itemView)
                 .load("https://image.tmdb.org/t/p/w342${item.profile_path}")
-                /* .transform(CenterCrop())*/
                 .fitCenter()
                 .into(imgView)
 

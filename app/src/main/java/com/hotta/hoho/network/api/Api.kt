@@ -1,6 +1,7 @@
 package com.hotta.hoho.network.api
 
 import com.hotta.hoho.Const_Ho
+import com.hotta.hoho.datamodel.PeopleImgResult
 import com.hotta.hoho.network.model.*
 import retrofit2.Response
 import retrofit2.http.GET
@@ -101,6 +102,13 @@ interface Api {
         @Query("api_key") key: String = Const_Ho.MOVIE_API_KEY,
 
         ): PeopleMovieResponse
+
+    @GET("person/{person_id}/images")
+    suspend fun getPeopleImg(
+        @Path("person_id") id: Int,
+        @Query("api_key") key: String = Const_Ho.MOVIE_API_KEY,
+
+        ): PeopleImgResponse
 
 
 }

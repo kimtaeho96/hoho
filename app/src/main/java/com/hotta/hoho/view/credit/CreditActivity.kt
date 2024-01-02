@@ -6,14 +6,13 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
-import com.hotta.hoho.R
 import com.hotta.hoho.databinding.ActivityCreditBinding
-import com.hotta.hoho.databinding.ActivityMovieDetailBinding
 import com.hotta.hoho.utils.MLOG
-import com.hotta.hoho.view.adapter.CreditMovieAdapter
+import com.hotta.hoho.view.adapter.PeopleImgAdapter
 import com.hotta.hoho.view.adapter.PeopleMovieAdapter
-import com.hotta.hoho.view.main.MainViewModel
+import kotlin.math.min
 
 class CreditActivity : AppCompatActivity() {
     private val TAG = "!!@@" + CreditActivity::class.java.simpleName
@@ -43,17 +42,27 @@ class CreditActivity : AppCompatActivity() {
             binding.creditBirthTv.text = it.birthday
             binding.creditBornTv.text = it.placeOfBirth
             binding.creditBiographyTv.text = it.biography
-            Log.d("asdf", it.biography)
 
 
         }
         viewModel.getPeopleMovie(id)
         viewModel.peopleMovie.observe(this) {
-            val peopleMovieAdapter = PeopleMovieAdapter(this, it)
+            val peopleMovieAdapter = PeopleMovieAdapter(this, it,this)
             binding.creditRv.adapter = peopleMovieAdapter
             binding.creditRv.layoutManager = LinearLayoutManager(
                 this,
-                RecyclerView.HORIZONTAL, false
+                RecyclerView.HORIZONTAL,
+                false
+            )
+        }
+
+        viewModel.getPeopleImg(id)
+        viewModel.peopleImg.observe(this) {
+            val peopleImgAdapter = PeopleImgAdapter(this, it)
+
+            binding.creditImgRv.adapter = peopleImgAdapter
+            binding.creditImgRv.layoutManager = StaggeredGridLayoutManager(
+                2, StaggeredGridLayoutManager.VERTICAL
             )
         }
     }

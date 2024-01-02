@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hotta.hoho.datamodel.CreditsMovieResult
 import com.hotta.hoho.datamodel.MovieDto
+import com.hotta.hoho.datamodel.PeopleImgResult
 import com.hotta.hoho.datamodel.PeopleMovieResult
 import com.hotta.hoho.network.model.PeopleDetailResponse
 import com.hotta.hoho.network.model.PeopleMovieResponse
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 class CreditViewModel : ViewModel() {
     private val networkRepository = NetworkRepository()
     lateinit var peopleMovieList: ArrayList<PeopleMovieResult>
+    lateinit var peopleImgList: ArrayList<PeopleImgResult>
 
 
     private var _peopleDetail = MutableLiveData<PeopleDetailResponse>()
@@ -27,6 +29,10 @@ class CreditViewModel : ViewModel() {
     private var _peopleMovie = MutableLiveData<List<PeopleMovieResult>>()
     val peopleMovie: LiveData<List<PeopleMovieResult>>
         get() = _peopleMovie
+
+    private var _peopleImg = MutableLiveData<List<PeopleImgResult>>()
+    val peopleImg: LiveData<List<PeopleImgResult>>
+        get() = _peopleImg
 
     fun getPeopleDetail(id: Int) = viewModelScope.launch {
 
@@ -59,6 +65,25 @@ class CreditViewModel : ViewModel() {
 
         } catch (e: Exception) {
             Log.d("(PeopleMovie)", e.toString())
+
+        }
+    }
+
+    fun getPeopleImg(id: Int) = viewModelScope.launch {
+
+        try {
+            val result = networkRepository.getPeopleImg(id)
+            peopleImgList = ArrayList()
+            for (item in result.profiles!!) {
+                peopleImgList.add(item)
+            }
+            _peopleImg.value = peopleImgList
+
+            Log.d("(PeopleImg)", result.toString())
+
+
+        } catch (e: Exception) {
+            Log.d("(PeopleImg)", e.toString())
 
         }
     }
