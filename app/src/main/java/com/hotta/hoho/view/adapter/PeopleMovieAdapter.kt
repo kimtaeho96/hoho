@@ -25,7 +25,7 @@ class PeopleMovieAdapter(
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        // 추가된 초기화 코드
+
 
         fun binItems(item: PeopleMovieResult) {
 

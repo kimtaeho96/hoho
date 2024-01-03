@@ -234,7 +234,6 @@ class MovieDetailActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             badList = ArrayList()
             //좋아용한 데이터를 가져온다.
             reviewLikeList = it as MutableList<String>
-            Log.d("rlaxogh", reviewLikeList.toString())
 
 
             //작성된 리뷰를 가져온다.

@@ -1,12 +1,8 @@
 package com.hotta.hoho.view.adapter
 
 import android.content.Context
-import android.content.Intent
-import android.graphics.Color
 import android.graphics.Typeface
-import android.provider.ContactsContract.CommonDataKinds.Im
 import android.util.Log
-import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -14,26 +10,33 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hotta.hoho.R
-import com.hotta.hoho.datamodel.CreditsMovieResult
 import com.hotta.hoho.datamodel.PeopleImgResult
-import com.hotta.hoho.datamodel.PeopleMovieResult
-import com.hotta.hoho.view.credit.CreditActivity
-import com.hotta.hoho.view.detail.MovieDetailActivity
-import kotlin.math.min
 
-class PeopleImgAdapter(val context: Context, val item: List<PeopleImgResult>) :
+
+class PeopleImgAdapter(
+    val context: Context,
+    val item: List<PeopleImgResult>,
+    ) :
     RecyclerView.Adapter<PeopleImgAdapter.ViewHolder>() {
     private var showAllItems = false
+
+    interface ItemClick {
+        fun onClick(view: View, position: Int)
+    }
+
+    var itemClick: ItemClick? = null
+
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imgView = itemView.findViewById<ImageView>(R.id.people_img_iv)
         val imgCountTv = TextView(context)
-        fun binItems(item: PeopleImgResult) {
 
+        fun binItems(item: PeopleImgResult) {
 
             imgView.layoutParams?.apply {
                 height = (500..1000).random()
@@ -47,6 +50,7 @@ class PeopleImgAdapter(val context: Context, val item: List<PeopleImgResult>) :
             imgCountTv.setOnClickListener {
                 showAllItems()
             }
+
             imgCountTv.text = "+" + (itemCount - 5).toString()
         }
 
@@ -84,6 +88,11 @@ class PeopleImgAdapter(val context: Context, val item: List<PeopleImgResult>) :
             imgCountTv.visibility = View.GONE
         }
 
+        fun disableTouch(test: Boolean) {
+            Log.d("rlaxogh", "콜백돼냐!")
+            imgView.isClickable = test
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -110,6 +119,11 @@ class PeopleImgAdapter(val context: Context, val item: List<PeopleImgResult>) :
             }
         }
 
+        if (itemClick != null) {
+            holder.itemView.setOnClickListener { v ->
+                itemClick?.onClick(v, position)
+            }
+        }
 
     }
 
