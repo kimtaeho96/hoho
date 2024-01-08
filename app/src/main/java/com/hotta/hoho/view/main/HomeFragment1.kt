@@ -52,51 +52,56 @@ class HomeFragment1 : Fragment() {
         viewModel.weatherResult.observe(viewLifecycleOwner, Observer {
 
             for (item in it) {
+                Log.d(
+                    "날씨", item.toString()
+                )
                 if (item.category.equals("SKY")) {
-                    Log.d("weather", item.category)
-
+                    Log.d("SKY", "SKY")
                     if (item.fcstValue == "1") {
-                        Log.d("weather", item.fcstValue)
-                        Log.d("weather", "맑음")
-
-                    } else if (item.fcstValue == "3") {
-                        Log.d("weather", item.fcstValue)
-                        Log.d("weather", "구름많음")
-                        binding.weatherTv.setText("구름많음")
+                        Log.d("SKY", item.fcstValue)
+                        Log.d("SKY", "맑음")
+                        binding.weatherTv.setText("맑음")
                         viewModel.getMoviesByGenre("27")
 
-
+                    } else if (item.fcstValue == "3") {
+                        Log.d("SKY", item.fcstValue)
+                        Log.d("SKY", "구름많음")
+                        binding.weatherTv.setText("구름많음")
+                        viewModel.getMoviesByGenre("27")
                     } else {
-                        Log.d("weather", item.fcstValue)
-                        Log.d("weather", "흐림")
+                        Log.d("SKY", item.fcstValue)
+                        Log.d("SKY", "흐림")
                         binding.weatherTv.setText("흐림")
-
                     }
                 } else if (item.category.equals("PTY")) {
-                    Log.d("weather", item.category)
+                    Log.d("PTY", "PTY")
 
                     if (item.fcstValue == "0") {
-                        Log.d("weather", item.fcstValue)
-                        Log.d("weather", "맑음")
+                        Log.d("PTY", item.fcstValue)
+                        Log.d("PTY", "맑음")
+                        binding.weatherTv.setText("맑음")
+
+                        break
                     } else if (item.fcstValue == "1") {
-                        Log.d("weather", item.fcstValue)
-                        Log.d("weather", "비")
+                        Log.d("PTY", item.fcstValue)
+                        Log.d("PTY", "비")
                         binding.weatherTv.setText("비")
                         viewModel.getMoviesByGenre("27")
 
                     } else if (item.fcstValue == "2") {
-                        Log.d("weather", item.fcstValue)
-                        Log.d("weather", "비/눈")
+                        Log.d("PTY", item.fcstValue)
+                        Log.d("PTY", "비/눈")
                         binding.weatherTv.setText("비/눈")
                     } else if (item.fcstValue == "3") {
-                        Log.d("weather", item.fcstValue)
-                        Log.d("weather", "눈")
+                        Log.d("PTY", item.fcstValue)
+                        Log.d("PTY", "눈")
                         binding.weatherTv.setText("눈")
                     } else {
-                        Log.d("weather", item.fcstValue)
-                        Log.d("weather", "소나기")
+                        Log.d("PTY", item.fcstValue)
+                        Log.d("PTY", "소나기")
                         binding.weatherTv.setText("소나기")
                     }
+
                 }
             }
 

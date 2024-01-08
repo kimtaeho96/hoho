@@ -9,6 +9,7 @@ import com.google.firebase.auth.UserInfo
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.hotta.hoho.Const_Ho
 import com.hotta.hoho.datamodel.CreditsMovieResult
 import com.hotta.hoho.datamodel.MovieDto
 import com.hotta.hoho.datamodel.PopularMovieResult
@@ -279,7 +280,7 @@ class MainViewModel : ViewModel() {
 
     fun getMoviesByGenre(genre: String) = viewModelScope.launch {
         val result =
-            networkRepository.getMoviesByGenre("8f20c3de95e081c58a1a1ca38e4f7d73", genre)
+            networkRepository.getMoviesByGenre(Const_Ho.MOVIE_API_KEY, genre)
         Log.d("MainViewModel(genre)1", result.toString())
         genreMovieList = ArrayList()
 
