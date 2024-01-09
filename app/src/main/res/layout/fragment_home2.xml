@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".view.main.HomeFragment2">
 
     <ScrollView
@@ -16,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
 
             <LinearLayout
 
@@ -97,7 +97,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#CFD4F8"
+                        android:background="@color/black"
                         android:orientation="vertical">
 
                         <!--  <LinearLayout
@@ -118,7 +118,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="5"
                                 android:text="현재상영작"
-                                android:textColor="@color/black"
+                                android:textColor="@color/white"
                                 android:textSize="20dp" />
 
                             <androidx.appcompat.widget.AppCompatButton
@@ -126,6 +126,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="25dp"
                                 android:layout_weight="1"
+                                android:textColor="@color/white"
                                 android:background="@drawable/radius"
                                 android:text="더보기.."
                                 android:textSize="10dp" />
@@ -143,16 +144,16 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="3dp"
+                            android:layout_height="1dp"
                             android:layout_marginTop="10dp"
-                            android:background="@color/lavender" />
+                            android:background="@color/red" />
                     </LinearLayout>
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#CFD4F8"
+                        android:background="@color/black"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -169,7 +170,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="5"
                                 android:text="인기영화"
-                                android:textColor="@color/black"
+                                android:textColor="@color/white"
                                 android:textSize="20dp" />
 
                             <androidx.appcompat.widget.AppCompatButton
@@ -177,6 +178,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="25dp"
                                 android:layout_weight="1"
+                                android:textColor="@color/white"
                                 android:background="@drawable/radius"
                                 android:text="더보기.."
                                 android:textSize="10dp" />
@@ -193,9 +195,9 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="3dp"
+                            android:layout_height="1dp"
                             android:layout_marginTop="10dp"
-                            android:background="@color/lavender" />
+                            android:background="@color/red" />
                     </LinearLayout>
 
 
@@ -203,7 +205,7 @@
                         android:layout_width="match_parent"
 
                         android:layout_height="wrap_content"
-                        android:background="#CFD4F8"
+                        android:background="@color/black"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -220,10 +222,11 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="5"
                                 android:text="Top Rated"
-                                android:textColor="@color/black"
+                                android:textColor="@color/white"
                                 android:textSize="20dp" />
 
                             <androidx.appcompat.widget.AppCompatButton
+                                android:textColor="@color/white"
                                 android:id="@+id/topMore"
                                 android:layout_width="0dp"
                                 android:layout_height="25dp"
@@ -254,9 +257,9 @@
                         <LinearLayout
 
                             android:layout_width="match_parent"
-                            android:layout_height="3dp"
+                            android:layout_height="1dp"
                             android:layout_marginTop="10dp"
-                            android:background="@color/lavender" />
+                            android:background="@color/red" />
                     </LinearLayout>
 
 
@@ -264,7 +267,7 @@
                         android:layout_width="match_parent"
 
                         android:layout_height="wrap_content"
-                        android:background="#CFD4F8"
+                        android:background="@color/black"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -280,7 +283,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="5"
                                 android:text="Upcoming"
-                                android:textColor="@color/black"
+                                android:textColor="@color/white"
                                 android:textSize="20dp" />
 
                             <androidx.appcompat.widget.AppCompatButton
@@ -288,6 +291,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="25dp"
                                 android:layout_weight="1"
+                                android:textColor="@color/white"
                                 android:background="@drawable/radius"
                                 android:text="더보기.."
                                 android:textSize="10dp" />
@@ -304,9 +308,9 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="3dp"
+                            android:layout_height="1dp"
                             android:layout_marginTop="10dp"
-                            android:background="@color/lavender" />
+                            android:background="@color/red" />
                     </LinearLayout>
 
                 </LinearLayout>

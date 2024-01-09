@@ -13,19 +13,21 @@
         android:layout_width="150dp"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
-        app:strokeColor="@color/lavender"
+        app:strokeColor="@color/white"
+        android:background="@color/black"
         app:strokeWidth="2dp"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
 
+            android:background="@color/red"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
             android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
+                android:visibility="gone"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="right"
@@ -62,6 +64,7 @@
                 android:layout_width="70dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="4dp"
+                android:textColor="@color/white"
                 android:background="@drawable/radius"
                 android:text="상세정보"
                 android:textSize="8sp" />
@@ -81,6 +84,7 @@
         android:id="@+id/loadMoreButton"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
+        android:textColor="@color/white"
         android:text="더보기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

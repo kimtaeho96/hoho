@@ -54,7 +54,7 @@ class HomeFragment2 : Fragment() {
                 binding.topLayout.animate().alpha(1f).setDuration(500).start()
             }
         }
-        val inputLayout = binding.inputLayout
+       // val inputLayout = binding.inputLayout
 
         val autoCompleteTextView = binding.textItem
         val hintColor = Color.BLACK
