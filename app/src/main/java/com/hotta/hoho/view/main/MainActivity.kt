@@ -18,6 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.hotta.hoho.R
 import com.hotta.hoho.databinding.ActivityMainBinding
+import com.hotta.hoho.utils.AppPreferences
 import com.hotta.hoho.view.map.MapActivity
 import com.hotta.hoho.view.adapter.DayMovieAdapter
 
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val viewModel: MainViewModel by viewModels()
     lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
+    private val TAG = "!!@@" + MainActivity::class.java.simpleName
 
     lateinit var rvAdapter: DayMovieAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(binding.root)
 
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-        val mainTitle =findViewById<TextView>(R.id.mainTitle)
+        val mainTitle = findViewById<TextView>(R.id.mainTitle)
         setSupportActionBar(toolbar)
 
         drawerLayout = binding.drawerLayout
@@ -63,17 +65,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val bottomNavigationView = binding.bottomNavigationView
         val navController = findNavController(R.id.fragmentContainerView)
 
-//
-        Log.d("zxcvasd",navController.currentDestination?.id.toString())
+        Log.d("zxcvasd", navController.currentDestination?.id.toString())
 
         bottomNavigationView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            Log.d("zxcvasd",destination.id.toString())
+            Log.d("zxcvasd", destination.id.toString())
             when (destination.id) {
-                R.id.homeFragment1->mainTitle.setText("메인")
-                R.id.homeFragment2->mainTitle.setText("영화")
-                R.id.homeFragment3->mainTitle.setText("MY")
+                R.id.homeFragment1 -> mainTitle.setText("메인")
+                R.id.homeFragment2 -> mainTitle.setText("영화")
+                R.id.homeFragment3 -> mainTitle.setText("")
 
 
                 /*R.id.fragment1 -> supportActionBar?.title = "Fragment 1"
@@ -94,7 +95,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
-
 
 
 }

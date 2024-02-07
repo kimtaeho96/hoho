@@ -2,6 +2,7 @@ package com.hotta.hoho
 
 import android.app.Application
 import android.content.Context
+import com.hotta.hoho.utils.AppPreferences
 import timber.log.Timber
 
 class App : Application() {
@@ -16,6 +17,12 @@ class App : Application() {
         fun context(): Context {
             return instance!!.applicationContext
         }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        AppPreferences.init(this)
+
     }
 
 
