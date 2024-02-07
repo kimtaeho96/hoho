@@ -48,6 +48,7 @@ class HomeFragment1 : Fragment() {
         }
 
         viewModel.getWeather()
+        viewModel.getMoviesByGenre("27")
 
         viewModel.weatherResult.observe(viewLifecycleOwner, Observer {
 
@@ -61,13 +62,13 @@ class HomeFragment1 : Fragment() {
                         Log.d("SKY", item.fcstValue)
                         Log.d("SKY", "맑음")
                         binding.weatherTv.setText("맑음")
-                        viewModel.getMoviesByGenre("27")
+                       // viewModel.getMoviesByGenre("27")
 
                     } else if (item.fcstValue == "3") {
                         Log.d("SKY", item.fcstValue)
                         Log.d("SKY", "구름많음")
                         binding.weatherTv.setText("구름많음")
-                        viewModel.getMoviesByGenre("27")
+                       // viewModel.getMoviesByGenre("27")
                     } else {
                         Log.d("SKY", item.fcstValue)
                         Log.d("SKY", "흐림")
@@ -86,7 +87,7 @@ class HomeFragment1 : Fragment() {
                         Log.d("PTY", item.fcstValue)
                         Log.d("PTY", "비")
                         binding.weatherTv.setText("비")
-                        viewModel.getMoviesByGenre("27")
+                        //viewModel.getMoviesByGenre("27")
 
                     } else if (item.fcstValue == "2") {
                         Log.d("PTY", item.fcstValue)
@@ -112,6 +113,7 @@ class HomeFragment1 : Fragment() {
             val movieId = it.id // 영화의 ID 가져오기
             val posterPath = it.poster_path // 영화의 포스터 경로 가져오기
             Log.d("RandomMovie", "Movie ID: $movieId, Poster Path: $posterPath")
+
             Glide.with(view)
                 .load("https://image.tmdb.org/t/p/w342${posterPath}")
                 .transform(CenterCrop())

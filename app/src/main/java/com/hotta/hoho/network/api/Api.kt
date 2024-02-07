@@ -45,7 +45,6 @@ interface Api {
         @Query("page") page: Int,
         @Query("api_key") key: String = "8f20c3de95e081c58a1a1ca38e4f7d73",
         @Query("language") language: String = "ko"
-
     ): PopularMovieResponse
 
 
@@ -54,22 +53,19 @@ interface Api {
         @Path("movie_id") id: Int,
         @Query("api_key") key: String,
         @Query("language") language: String = "ko"
-
     ): DetailMovieResponse
 
     @GET("movie/{movie_id}/videos")
     suspend fun getVideoMovie(
         @Path("movie_id") id: Int,
-        @Query("api_key") key: String = "8f20c3de95e081c58a1a1ca38e4f7d73",
-
-        ): VideoMovieResponse
+        @Query("api_key") key: String = "8f20c3de95e081c58a1a1ca38e4f7d73"
+    ): VideoMovieResponse
 
     @GET(" movie/{movie_id}/credits")
     suspend fun getCreditsMovie(
         @Path("movie_id") id: Int,
-        @Query("api_key") key: String = "8f20c3de95e081c58a1a1ca38e4f7d73",
-
-        ): CreditsMovieResponse
+        @Query("api_key") key: String = "8f20c3de95e081c58a1a1ca38e4f7d73"
+    ): CreditsMovieResponse
 
     @GET("tv/popular")
     suspend fun getPopularTv(
@@ -82,16 +78,15 @@ interface Api {
     suspend fun getMoviesByGenre(
         @Query("api_key") key: String,
         @Query("with_genres") genreId: String,
-        @Query("language") language: String = "ko",
-
-        ): PopularMovieResponse
+        @Query("language") language: String = "ko"
+    ): PopularMovieResponse
 
 
     // 특정 장르의 영화 가져오기
     @GET("person/{person_id}")
     suspend fun getPeopleDetail(
         @Path("person_id") id: Int,
-        @Query("api_key") key: String = Const_Ho.MOVIE_API_KEY,
+        @Query("api_key") key: String = Const_Ho.MOVIE_API_KEY
 
     ): PeopleDetailResponse
 
@@ -99,16 +94,23 @@ interface Api {
     @GET("person/{person_id}/movie_credits")
     suspend fun getPeopleMovie(
         @Path("person_id") id: Int,
-        @Query("api_key") key: String = Const_Ho.MOVIE_API_KEY,
+        @Query("api_key") key: String = Const_Ho.MOVIE_API_KEY
 
-        ): PeopleMovieResponse
+    ): PeopleMovieResponse
 
     @GET("person/{person_id}/images")
     suspend fun getPeopleImg(
         @Path("person_id") id: Int,
-        @Query("api_key") key: String = Const_Ho.MOVIE_API_KEY,
+        @Query("api_key") key: String = Const_Ho.MOVIE_API_KEY
 
-        ): PeopleImgResponse
+    ): PeopleImgResponse
+
+    @GET("search/movie")
+    suspend fun getSearchMovie(
+        @Query("query")query: String,
+        @Query("api_key") key: String = Const_Ho.MOVIE_API_KEY,
+        @Query("language") language: String = "ko"
+    ): SearchMovieResponse
 
 
 }

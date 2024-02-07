@@ -281,7 +281,6 @@ class MainViewModel : ViewModel() {
     fun getMoviesByGenre(genre: String) = viewModelScope.launch {
         val result =
             networkRepository.getMoviesByGenre(Const_Ho.MOVIE_API_KEY, genre)
-        Log.d("MainViewModel(genre)1", result.toString())
         genreMovieList = ArrayList()
 
         try {
@@ -290,13 +289,8 @@ class MainViewModel : ViewModel() {
             }
 
             val randomMovie = genreMovieList.random()
-            Log.d("MainViewModel(random)1", randomMovie.toString())
-            Log.d("MainViewModel(random)2", randomMovie.id.toString())
-            Log.d("MainViewModel(random)3", randomMovie.poster_path.toString())
-
             _genereMovieResult.value = randomMovie
 
-            Log.d("MainViewModel(genre)2", genreMovieList.toString())
         } catch (e: Exception) {
             Log.d("MainViewModel(genre)3", e.toString())
         }

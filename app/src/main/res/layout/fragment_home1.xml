@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_marginBottom="80dp"
-                android:background="@drawable/radius">
+                android:background="@drawable/search_radius_tv">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -67,7 +67,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"

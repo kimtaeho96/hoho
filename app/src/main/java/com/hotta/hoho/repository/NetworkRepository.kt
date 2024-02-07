@@ -15,6 +15,8 @@ class NetworkRepository {
     suspend fun getCurrentMovieList(targetDt: String, key: String) =
         client1.getDayMovieChart(targetDt, key)
 
+
+    //영화api
     suspend fun getPopularMovie(page: Int) = client2.getPopularMovie(page)
     suspend fun getCurrentMovie(page: Int) = client2.getCurrentMovie(page)
     suspend fun getTopMovie(page: Int) = client2.getTopMovie(page)
@@ -36,10 +38,14 @@ class NetworkRepository {
     suspend fun getPeopleMovie(id: Int) = client2.getPeopleMovie(id)
     suspend fun getPeopleImg(id: Int) = client2.getPeopleImg(id)
 
+    suspend fun getSearchMovie(movieName: String) = client2.getSearchMovie(movieName)
+
     //kakao api
     suspend fun getKakaoMapSearch(key: String, query: String, x: String, y: String, radius: Int) =
         kakaoClient.getSearchKeyword(key, query, x, y, radius)
 
+
+    //날씨 api
     suspend fun getWeather(
         dataType: String, numOfRows: Int, pageNo: Int,
         baseDate: Int, baseTime: Int, nx: String, ny: String

@@ -6,4 +6,6 @@ public class Const_Ho {
 
     public static Boolean USE_LOG = true;
 
+    public static Boolean AUTO_SAVE = true;
+
 }
