@@ -23,9 +23,12 @@ interface SearchDao {
     fun update(searchListEntity: SearchListEntity)
 
     @Query("DELETE FROM search_list_table")
-    fun delete()
+    fun allDeleteData()
 
-   /* @Query("SELECT * FROM search_list_table WHERE selected =:selected")
-    fun getSearchData(selected: Boolean = true) :List<SearchListEntity>*/
+    @Query("DELETE FROM search_list_table WHERE searchName=:searchName")
+    fun selectDeleteData(searchName: String)
+
+    /* @Query("SELECT * FROM search_list_table WHERE selected =:selected")
+     fun getSearchData(selected: Boolean = true) :List<SearchListEntity>*/
 
 }

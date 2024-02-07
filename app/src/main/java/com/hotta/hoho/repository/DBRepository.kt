@@ -18,7 +18,9 @@ class DBRepository {
     fun updateSearchData(searchDataInsert: SearchListEntity) =
         db.searchDao().update(searchDataInsert)
 
-    fun deleteSearchData()=db.searchDao().delete()
+    fun deleteSearchData() = db.searchDao().allDeleteData()
+
+    fun selectDeleteData(searchData: String) = db.searchDao().selectDeleteData(searchData)
 
 
 }

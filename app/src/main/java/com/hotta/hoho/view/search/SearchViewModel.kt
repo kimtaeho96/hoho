@@ -61,6 +61,10 @@ class SearchViewModel : ViewModel() {
         dbRepository.deleteSearchData()
     }
 
+    fun getSelectDeleteData(searchData: String) = viewModelScope.launch(Dispatchers.IO) {
+        dbRepository.selectDeleteData(searchData)
+    }
+
     //DB에 데이터저장
     @RequiresApi(Build.VERSION_CODES.O)
     fun saveSearchData(searchData: String) = viewModelScope.launch(Dispatchers.IO) {
