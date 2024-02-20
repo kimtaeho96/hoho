@@ -8,4 +8,7 @@ public class Const_Ho {
 
     public static Boolean AUTO_SAVE = true;
 
+    public static Boolean LOGIN_CHECK = true;
+
+
 }

@@ -1,6 +1,7 @@
 package com.hotta.hoho.view.join
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Binder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,11 +22,16 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.hotta.hoho.R
 import com.hotta.hoho.databinding.ActivityJoinBinding
 import com.hotta.hoho.utils.FireBaseAuthUtils
 import com.hotta.hoho.utils.FireBaseRef
+import com.hotta.hoho.utils.MLOG
 import com.hotta.hoho.view.main.MainActivity
 
 class JoinActivity : AppCompatActivity() {
@@ -36,6 +42,8 @@ class JoinActivity : AppCompatActivity() {
     private var passwordFlag = false
     private var passwordCheckFlag = false
     private var nameFlag = false
+
+    private val TAG = "!!@@" + JoinActivity::class.java.simpleName
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -43,21 +51,20 @@ class JoinActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.nameInputLayout.editText?.addTextChangedListener(nameListener)
-        //  binding.emailInputLayout.editText?.addTextChangedListener(idListener)
         binding.emailCheckBtn.setOnClickListener {
-            showDialog(binding.emailInputEditText.text.toString())
+            showDialog()
         }
 
-//        binding.pwdInputEditText.setHintTextColor(ContextCompat.getColor(this, R.color.lavender))
         binding.pwdInputLayout.editText?.addTextChangedListener(passwordListener)
-        binding.pwdInputEditText.hint = "숫자 6자리 이상 입력해 주세요"
-        binding.pwdInputEditText.setOnFocusChangeListener { _, hasFocus ->
+        //폰트적용시 투명해짐
+        binding.pwdInputEditText.setTypeface(Typeface.DEFAULT)
+        /*binding.pwdInputEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 binding.pwdInputEditText.hint = ""
             } else {
                 binding.pwdInputEditText.hint = "숫자 6자리 이상 입력해 주세요"
             }
-        }
+        }*/
 
         binding.pwdCheckInputEditText.setHintTextColor(
             ContextCompat.getColor(
@@ -66,14 +73,15 @@ class JoinActivity : AppCompatActivity() {
             )
         )
         binding.pwdCheckInputLayout.editText?.addTextChangedListener(passwordCheckListener)
-        binding.pwdCheckInputEditText.hint = "비밀번호 확인"
-        binding.pwdCheckInputEditText.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                binding.pwdCheckInputEditText.hint = ""
-            } else {
-                binding.pwdCheckInputEditText.hint = "비밀번호 확인"
-            }
-        }
+        //폰트적용시 투명해짐
+        binding.pwdCheckInputEditText.setTypeface(Typeface.DEFAULT)
+        /* binding.pwdCheckInputEditText.setOnFocusChangeListener { _, hasFocus ->
+             if (hasFocus) {
+                 binding.pwdCheckInputEditText.hint = ""
+             } else {
+                 binding.pwdCheckInputEditText.hint = "비밀번호 확인"
+             }
+         }*/
 
 
 
@@ -82,6 +90,7 @@ class JoinActivity : AppCompatActivity() {
             val email = binding.emailInputEditText.text.toString()
             val pwd = binding.pwdInputEditText.text.toString()
             val type = "email"
+
             val userModel = UserModel(name, email, type)
             try {
                 viewModel.join(this, email, pwd)
@@ -91,8 +100,6 @@ class JoinActivity : AppCompatActivity() {
                         //회원정보를 DB에 저장````````````````````````````````````````
 
                         viewModel.userDataInsert(FireBaseAuthUtils.getUid(), userModel)
-                        FireBaseRef.emailCheck.push().setValue(email)
-
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -159,7 +166,7 @@ class JoinActivity : AppCompatActivity() {
             if (s != null) {
                 when {
                     s.isEmpty() -> {
-                        binding.nameInputLayout.error = "이름을 입력해 주세요."
+//                        binding.nameInputLayout.error = "이름을 입력해 주세요."
                         nameFlag = false
                     }
 
@@ -292,9 +299,7 @@ class JoinActivity : AppCompatActivity() {
         binding.joinBtn.isEnabled = idFlag && passwordFlag && passwordCheckFlag && nameFlag
     }
 
-    private fun showDialog(email: String) {
-        viewModel.emailCheck()
-
+    private fun showDialog() {
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.emailcheck, null)
         val mBuilder = AlertDialog.Builder(this)
             .setView(mDialogView)
@@ -302,7 +307,7 @@ class JoinActivity : AppCompatActivity() {
 
         val mAlertDialog = mBuilder.show()
         val emailArea = mDialogView.findViewById<TextInputEditText>(R.id.emailCheckArea)
-        Log.d("email", email)
+        val email = binding.emailInputEditText.text.toString()
         if (email == "이메일을 입력해 주세요") {
             emailArea.setText("")
         } else {
@@ -312,10 +317,37 @@ class JoinActivity : AppCompatActivity() {
         val emailAreaLy = mDialogView.findViewById<TextInputLayout>(R.id.emailCheckAreaLayout)
         emailAreaLy.editText?.addTextChangedListener(idListener(mDialogView))
 
+
         val emailBtn = mDialogView.findViewById<Button>(R.id.emailCheckBtns)
         val emailPassBtn = mDialogView.findViewById<Button>(R.id.emailUseBtn)
         emailBtn.setOnClickListener {
-            viewModel.emailCheckResult.observe(this, Observer {
+            MLOG.d(TAG, emailArea.text.toString())
+            FireBaseRef.emailCheck.orderByValue().equalTo(emailArea.text.toString())
+                .addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (!dataSnapshot.exists()) {
+                            MLOG.d(TAG, "값이 없다.")
+                            if (idFlag) {
+                                emailTv.setText("사용 가능한 이메일 입니다.")
+                                binding.emailInputEditText.setText(emailArea.text.toString())
+                                emailPassBtn.isEnabled = true
+                            } else {
+                                emailTv.setText("이메일 형식을 맞춰 주세요")
+                            }
+                        } else {
+                            MLOG.d(TAG, "값이 있다.")
+                            emailTv.setText("중복된 이메일 입니다.")
+
+                        }
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        // 에러 처리
+                    }
+                })
+
+            /*viewModel.emailCheckResult.observe(this, Observer {
                 if (it.contains(emailArea.text.toString())) {
                     emailTv.setText("중복된 이메일 입니다.")
                 } else {
@@ -327,7 +359,7 @@ class JoinActivity : AppCompatActivity() {
                         emailTv.setText("이메일 형식을 맞춰 주세요")
                     }
                 }
-            })
+            })*/
 
 
         }

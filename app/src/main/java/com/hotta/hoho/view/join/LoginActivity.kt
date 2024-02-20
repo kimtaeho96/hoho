@@ -2,6 +2,7 @@ package com.hotta.hoho.view.join
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -27,6 +28,8 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.gun0912.tedpermission.provider.TedPermissionProvider.context
+import com.hotta.hoho.Const_Ho
+import com.hotta.hoho.Statics
 import com.hotta.hoho.utils.FireBaseAuthUtils
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
@@ -55,6 +58,10 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         KakaoSdk.init(this, "d2a3b5eae2741acf2477f03de06627ca")
 
+
+        //폰트적용시 투명? 기본폰트 따로 적용
+        binding.LoginPwdArea.setTypeface(Typeface.DEFAULT)
+
         binding.loginBtn.setOnClickListener {
             val email = binding.LoginEmailArea.text.toString()
             val pwd = binding.LoginPwdArea.text.toString()
@@ -64,6 +71,7 @@ class LoginActivity : AppCompatActivity() {
 
             viewModel.loginResult.observe(this, Observer {
                 if (it) {
+                    Statics.UID = FireBaseAuthUtils.getUid()
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()

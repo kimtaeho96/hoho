@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.hotta.hoho.databinding.FragmentHome1Binding
+import com.hotta.hoho.utils.MLOG
 import com.hotta.hoho.view.adapter.DayMovieAdapter
 import com.hotta.hoho.view.detail.MovieDetailActivity
 import com.hotta.hoho.view.search.SearchActivity
@@ -25,20 +26,27 @@ class HomeFragment1 : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
 
+    private val TAG = "!!@@" + HomeFragment1::class.java.simpleName
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        MLOG.d(TAG,"onCreate")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        MLOG.d(TAG,"onCreateView")
+
         _binding = FragmentHome1Binding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        MLOG.d(TAG,"onViewCreated")
 
         binding.searchLayout.setOnClickListener {
 
@@ -62,13 +70,13 @@ class HomeFragment1 : Fragment() {
                         Log.d("SKY", item.fcstValue)
                         Log.d("SKY", "맑음")
                         binding.weatherTv.setText("맑음")
-                       // viewModel.getMoviesByGenre("27")
+                        // viewModel.getMoviesByGenre("27")
 
                     } else if (item.fcstValue == "3") {
                         Log.d("SKY", item.fcstValue)
                         Log.d("SKY", "구름많음")
                         binding.weatherTv.setText("구름많음")
-                       // viewModel.getMoviesByGenre("27")
+                        // viewModel.getMoviesByGenre("27")
                     } else {
                         Log.d("SKY", item.fcstValue)
                         Log.d("SKY", "흐림")
@@ -137,6 +145,48 @@ class HomeFragment1 : Fragment() {
 
         })*/
 
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        MLOG.d(TAG,"onStart")
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        MLOG.d(TAG,"onResume")
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MLOG.d(TAG,"onPause")
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        MLOG.d(TAG,"onStop")
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        MLOG.d(TAG,"onSaveInstanceState")
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        MLOG.d(TAG,"onDestroyView")
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        MLOG.d(TAG,"onDestroy")
 
     }
 

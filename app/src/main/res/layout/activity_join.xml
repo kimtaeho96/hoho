@@ -31,7 +31,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="회원가입"
-                        android:textColor="@color/lavender"
+                        android:textColor="@color/black"
                         android:textSize="35sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="이름"
-                        android:textColor="@color/lavender"
+                        android:textColor="@color/black"
                         android:textSize="15sp" />
 
 
@@ -96,11 +96,9 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="이름을 입력해주세요"
                         android:padding="2dp"
-                        android:textColorHint="@color/lavender"
-                        app:boxBackgroundColor="@color/white"
-                        app:boxStrokeColor="@color/lavender"
+                        android:hint="Name"
+                        android:textColorHint="@color/gray"
                         app:endIconMode="clear_text">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -109,7 +107,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:singleLine="true"
-                            android:textColor="@color/lavender"
+                            android:textColor="@color/black"
                             android:textSize="15sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -127,7 +125,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="이메일"
-                        android:textColor="@color/lavender"
+                        android:textColor="@color/black"
                         android:textSize="15sp" />
 
                     <LinearLayout
@@ -165,7 +163,7 @@
                             android:id="@+id/emailCheckBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/radius"
+                            android:background="@drawable/join_btn_radius"
                             android:text="중복확인" />
                     </LinearLayout>
 
@@ -185,7 +183,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="비밀번호"
-                        android:textColor="@color/lavender"
+                        android:textColor="@color/black"
                         android:textSize="15sp" />
 
 
@@ -194,24 +192,25 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="Password"
                         android:padding="2dp"
-                        android:textColorHint="@color/lavender"
-                        app:boxBackgroundColor="@color/white"
-                        app:boxStrokeColor="@color/lavender"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/black"
                         app:counterEnabled="true"
                         app:counterMaxLength="16"
-                        app:endIconMode="clear_text">
+                        app:endIconMode="password_toggle">
 
 
                         <com.google.android.material.textfield.TextInputEditText
+
                             android:id="@+id/pwd_input_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:ellipsize="end"
                             android:gravity="center_vertical"
                             android:inputType="textPassword"
+                            android:maxLines="1"
                             android:singleLine="true"
-                            android:textColor="@color/lavender"
-                            android:textColorHint="@color/lavender"
                             android:textSize="15sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -230,32 +229,34 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="비밀번호 확인"
-                        android:textColor="@color/lavender"
+                        android:textColor="@color/black"
                         android:textSize="15sp" />
 
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:hint="Password Check"
                         android:id="@+id/pwdCheck_input_layout"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:textColorHint="@color/lavender"
+                        android:textColorHint="@color/gray"
                         app:boxBackgroundColor="@color/white"
-                        app:boxStrokeColor="@color/lavender"
                         app:counterEnabled="true"
                         app:counterMaxLength="16"
-                        app:endIconMode="clear_text">
+                        app:endIconMode="password_toggle">
 
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/pwdCheck_input_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:ellipsize="end"
                             android:gravity="center_vertical"
                             android:inputType="textPassword"
+                            android:maxLines="1"
                             android:singleLine="true"
-                            android:textColorHint="@color/lavender"
+                            android:textColorHint="@color/gray"
                             android:textSize="15sp" />
                         />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -274,8 +275,7 @@
                     android:layout_height="60dp"
                     android:layout_marginLeft="50dp"
                     android:layout_marginRight="50dp"
-
-                    android:background="@color/lavender"
+                    android:background="@color/gray"
                     android:enabled="false"
                     android:text="가입하기"
                     android:textSize="20dp" />

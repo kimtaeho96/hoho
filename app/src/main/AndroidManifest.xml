@@ -50,7 +50,11 @@
             android:exported="false" />
         <activity
             android:name=".view.join.JoinActivity"
-            android:exported="false" />
+            android:exported="true" >
+
+
+
+        </activity>
         <activity
             android:name=".view.intro.IntroActivity"
             android:exported="true" >

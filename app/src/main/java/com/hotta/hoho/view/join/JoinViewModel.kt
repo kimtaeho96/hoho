@@ -27,6 +27,8 @@ class JoinViewModel : ViewModel() {
     private val fireBaseRepository = FireBaseRepository()
     lateinit var emailList: ArrayList<String>
 
+    private val TAG ="!!@@"+JoinViewModel::class.java.simpleName
+
     private val _joinResult = MutableLiveData<Boolean>()
     val joinResult: LiveData<Boolean>
         get() = _joinResult
@@ -42,14 +44,16 @@ class JoinViewModel : ViewModel() {
 
     fun join(activity: Activity, email: String, password: String) = viewModelScope.launch {
         try {
-            Log.d("JoinViewModel1", email.toString())
-            Log.d("JoinViewModel1", password.toString())
             auth = Firebase.auth
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity) { task ->
 
-                    Log.d("JoinViewModel1", password.toString())
-                    _joinResult.value = task.isSuccessful
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "createUserWithEmail:success")
+                        _joinResult.value = task.isSuccessful
+                    } else {
+                        Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                    }
                 }
         } catch (e: Exception) {
             Log.d("JoinViewModel3", e.toString())

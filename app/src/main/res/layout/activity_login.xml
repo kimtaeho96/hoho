@@ -74,8 +74,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
+                android:inputType="textPassword"
+                app:endIconMode="password_toggle"
                 android:hint="비밀번호"
                 android:textSize="20dp" />
+
+            <CheckBox
+                android:id="@+id/auto_login_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:text="자동로그인" />
 
             <Button
                 android:id="@+id/loginBtn"
@@ -83,26 +92,30 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
+                android:background="@drawable/join_btn_radius"
                 android:text="로그인"
                 android:textSize="20dp"
                 android:textStyle="" />
 
+
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/btn_google_sign_in"
-                android:layout_margin="10dp"
-
                 android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
 
-            <ImageView
-                android:layout_margin="10dp"
-
-                android:id="@+id/kakaoLoginBtn"
-                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/kakao_login_medium_wide" />
+                android:layout_margin="10dp"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/kakaoLoginBtn"
+                android:layout_width="300dp"
+
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:src="@drawable/kakao_login_medium_wide"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"

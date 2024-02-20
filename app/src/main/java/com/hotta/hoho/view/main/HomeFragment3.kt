@@ -49,6 +49,7 @@ class HomeFragment3 : Fragment() {
 
         val uid = auth.currentUser?.uid.toString()
         Log.d("HomeFragment3_1", uid)
+
         viewModel.getUserInfo(uid)
 
         UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
