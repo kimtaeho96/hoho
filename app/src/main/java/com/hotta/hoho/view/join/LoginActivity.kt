@@ -1,42 +1,33 @@
 package com.hotta.hoho.view.join
 
-import android.content.Context
+
 import android.content.Intent
 import android.graphics.Typeface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
-import com.hotta.hoho.R
-import com.hotta.hoho.databinding.ActivityLoginBinding
-import com.hotta.hoho.view.main.MainActivity
-
-
-import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.AuthCredential
-
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.gun0912.tedpermission.provider.TedPermissionProvider.context
-import com.hotta.hoho.Const_Ho
+import com.hotta.hoho.R
 import com.hotta.hoho.Statics
+import com.hotta.hoho.databinding.ActivityLoginBinding
 import com.hotta.hoho.utils.FireBaseAuthUtils
+import com.hotta.hoho.view.main.MainActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
-import com.kakao.sdk.common.model.ClientError
-import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.kakao.sdk.user.model.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -66,9 +57,19 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.LoginEmailArea.text.toString()
             val pwd = binding.LoginPwdArea.text.toString()
 
+            val pattern = Patterns.EMAIL_ADDRESS
 
-            viewModel.login(this, email, pwd)
+            if (email.isEmpty() || pwd.isEmpty()) {
+                Toast.makeText(this, "아이디 또는 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
 
+            } else {
+                if (pattern.matcher(email).matches()) {
+                    viewModel.login(this, email, pwd)
+                } else {
+                    Toast.makeText(this, "이메일 형식이 틀렸습니다.", Toast.LENGTH_SHORT).show()
+                }
+
+            }
             viewModel.loginResult.observe(this, Observer {
                 if (it) {
                     Statics.UID = FireBaseAuthUtils.getUid()
@@ -82,6 +83,10 @@ class LoginActivity : AppCompatActivity() {
             })
         }
 
+        binding.forgetPwdBtn.setOnClickListener {
+            val intent = Intent(this, ForgetPwdActivity::class.java)
+            startActivity(intent)
+        }
 
 
         binding.joinBtn.setOnClickListener {

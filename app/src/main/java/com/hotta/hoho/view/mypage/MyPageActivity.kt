@@ -12,12 +12,14 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.hotta.hoho.R
+import com.hotta.hoho.Statics
 import com.hotta.hoho.databinding.ActivityJoinBinding
 import com.hotta.hoho.databinding.ActivityMyPageBinding
 import com.hotta.hoho.utils.FireBaseAuthUtils
@@ -35,10 +37,13 @@ class MyPageActivity : AppCompatActivity() {
         val getName = intent.getStringExtra("name").toString()
         val getEmail = intent.getStringExtra("email").toString()
 
+
         binding.myPageEmail.setText(getEmail)
-        binding.myPageName.setText(getName)
+        binding.myPageName.setText(Statics.ID)
         binding.myEmail.setText(getEmail)
-        binding.myId.setText(getEmail)
+        binding.myId.setText(Statics.ID)
+
+        getProImg()
 
         val getAction = registerForActivityResult(
             ActivityResultContracts.GetContent(),
@@ -53,7 +58,6 @@ class MyPageActivity : AppCompatActivity() {
         }
 
         binding.profileNameChgBtn.setOnClickListener {
-
             showDialog()
         }
 
@@ -62,13 +66,19 @@ class MyPageActivity : AppCompatActivity() {
             binding.pwdLayout2.visibility = View.VISIBLE
         }
 
+        binding.pwdCheckBtn.setOnClickListener {
+            binding.pwdLayout3.visibility = View.VISIBLE
+        }
+
         binding.pwdSave.setOnClickListener {
+
 
         }
 
         binding.pwdCancel.setOnClickListener {
             binding.pwdLayout1.visibility = View.VISIBLE
             binding.pwdLayout2.visibility = View.GONE
+            binding.pwdLayout3.visibility = View.GONE
         }
 
         binding.brokebtn.setOnClickListener {
@@ -94,9 +104,25 @@ class MyPageActivity : AppCompatActivity() {
 
         var uploadTask = mountainsRef.putBytes(data)
         uploadTask.addOnFailureListener {
+            Log.e("imgUpload", "이미지를 저장할 수 없습니다: ${it.message}")
 
         }.addOnSuccessListener { taskSnapshot ->
 
+        }
+    }
+
+    fun getProImg() {
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+
+        val mountainsRef = storageRef.child("profile").child(FireBaseAuthUtils.getUid() + ".png")
+
+        mountainsRef.downloadUrl.addOnSuccessListener { uri ->
+            Glide.with(this) // `this`는 현재의 context나 activity를 나타냅니다.
+                .load(uri)
+                .into(binding.profileImg) // `binding.profileImg`는 이미지를 표시할 ImageView입니다.
+        }.addOnFailureListener {
+            Log.e("getProImg", "이미지를 다운로드할 수 없습니다: ${it.message}")
         }
     }
 

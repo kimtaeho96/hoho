@@ -37,6 +37,7 @@ class SearchListActivity : AppCompatActivity() {
 
                 binding.searchNumber.setText("(${it.size})")
 
+
             }
         } else {
 

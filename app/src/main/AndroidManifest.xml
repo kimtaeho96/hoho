@@ -20,6 +20,29 @@
         android:theme="@style/Theme.Hoho"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <activity
+            android:name=".view.join.ForgetPwdActivity"
+            android:exported="true" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="hotta.page.link"
+                    android:scheme="https"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.mymovie.MyLikeMovieActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.myreview.MyReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.myreview.MyReviewActivity"
+            android:exported="false" />
         <activity
             android:name=".view.search.SearchListActivity"
             android:exported="false" />
@@ -50,14 +73,10 @@
             android:exported="false" />
         <activity
             android:name=".view.join.JoinActivity"
-            android:exported="true" >
-
-
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".view.intro.IntroActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -88,8 +107,6 @@
         <activity
             android:name=".view.main.MainActivity"
             android:exported="true">
-
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -109,6 +126,7 @@
                     android:scheme="kakaod2a3b5eae2741acf2477f03de06627ca" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".msg.FireBaseService"
             android:exported="false">

@@ -7,5 +7,9 @@ package com.hotta.hoho;
  */
 public class Statics {
     public static String UID = "";
+    public static String ID = "";
+
+    public static String Email = "";
+    public static String weather = "";
 
 }

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.values
 import com.hotta.hoho.repository.FireBaseRepository
 import com.hotta.hoho.utils.FireBaseAuthUtils
 import com.hotta.hoho.utils.FireBaseRef
@@ -21,6 +22,7 @@ class DetailViewModel : ViewModel() {
     lateinit var movieReviewList: ArrayList<ReviewModel>
     lateinit var movieModifyReviewList: ArrayList<ReviewModel>
     var movieLikeReviewList = mutableListOf<String>()
+    var movieLikeList = mutableListOf<String>()
 
 
     private var _reviewData = MutableLiveData<List<ReviewModel>>()
@@ -31,13 +33,17 @@ class DetailViewModel : ViewModel() {
     val reviewLikeData: LiveData<List<String>>
         get() = _reviewLikeData
 
+    private var _movieLikeData = MutableLiveData<String>()
+    val movieLikeData: LiveData<String>
+        get() = _movieLikeData
+
     private var _modifyData = MutableLiveData<ReviewModel>()
     val modifyData: LiveData<ReviewModel>
         get() = _modifyData
 
     fun reviewDataInsert(id: String, reviewModel: ReviewModel) = viewModelScope.launch {
         fireBaseRepository.insertReview(id, reviewModel)
-        fireBaseRepository.insertUserReview(reviewModel,id)
+        fireBaseRepository.insertUserReview(reviewModel, id)
     }
 
     fun selectReviewData(id: String) = viewModelScope.launch {
@@ -71,7 +77,7 @@ class DetailViewModel : ViewModel() {
         FireBaseRef.movieReview.child(id).addValueEventListener(postListener)
     }
 
-    fun selectReviewLikeData() = viewModelScope.launch {
+    fun selectReviewLikeData(movieId: String) = viewModelScope.launch {
         movieLikeReviewList = ArrayList()
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -98,8 +104,41 @@ class DetailViewModel : ViewModel() {
 
             }
         }
-        FireBaseRef.reviewLike.child(FireBaseAuthUtils.getUid()).addValueEventListener(postListener)
+        FireBaseRef.myReviewLike.child(movieId).child(FireBaseAuthUtils.getUid())
+            .addValueEventListener(postListener)
     }
+    fun insertLikeMovie(movieId: String) = viewModelScope.launch {
+        fireBaseRepository.insertLikeMovie(movieId)
+    }
+    fun getMovieLikeData(id:String) = viewModelScope.launch {
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                try {
+                    for (data in dataSnapshot.children) {
+                        Log.d("asdffff", data.key.toString())
+
+                        if(data.key.equals(id)){
+                            Log.d("asdffff", data.value.toString())
+                            _movieLikeData.value = data.value.toString()
+                        }
+                    }
+
+                } catch (e: Exception) {
+                    Log.d("asdf", e.toString())
+                }
+
+
+            }
+
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+            }
+        }
+        FireBaseRef.movieLike.child(FireBaseAuthUtils.getUid())
+            .addValueEventListener(postListener)
+    }
+
 
     fun selectReviewModifyData(movieId: String, uid: String) = viewModelScope.launch {
         movieModifyReviewList = ArrayList()

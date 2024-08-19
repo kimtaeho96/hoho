@@ -156,7 +156,7 @@ class SearchActivity : AppCompatActivity() {
         binding.backBtn.setOnClickListener {
             finish()
         }
-        binding.searchArea.setText("아저씨")
+       // binding.searchArea.setText("아저씨")
         binding.searchBtn.setOnClickListener {
             val searchText = binding.searchArea.text.toString()
 

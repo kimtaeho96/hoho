@@ -21,6 +21,7 @@ import com.hotta.hoho.repository.NetworkRepository
 import com.hotta.hoho.utils.FireBaseRef
 import com.hotta.hoho.view.detail.ReviewModel
 import com.hotta.hoho.view.join.UserModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -187,13 +188,11 @@ class MainViewModel : ViewModel() {
             val result = networkRepository.getDeltailMovie(id, "8f20c3de95e081c58a1a1ca38e4f7d73")
             Log.d("MainViewModel(Detail)", result.toString())
 
-
             _detailMoviResult.value = listOf(result)
 
         } catch (e: Exception) {
             Log.d("MainViewModel(Detail)", e.toString())
         }
-
 
     }
 
@@ -218,7 +217,12 @@ class MainViewModel : ViewModel() {
     fun getCreditsMovie(id: Int) = viewModelScope.launch {
 
         try {
-            val result = networkRepository.getCreditsMovie(id)
+            val deferredResult = async { // 새로운 코루틴을 시작하지만, 이는 추가 스레드가 아님
+                networkRepository.getCreditsMovie(id)
+            }
+
+            val result = deferredResult.await() // 작업이 완료될 때까지 기다림
+
             creditsMovieList = ArrayList()
             for (item in result.cast) {
                 if (item.known_for_department.contains("Acting") && item.profile_path != null) {
@@ -228,11 +232,13 @@ class MainViewModel : ViewModel() {
 
             _creditsMovieResult.value = creditsMovieList
 
+
             Log.d("MainViewModel(Credits)", result.toString())
 
         } catch (e: Exception) {
             Log.d("MainViewModel(Credits)", e.toString())
         }
+
     }
 
     fun getUserInfo(uid: String) = viewModelScope.launch {
@@ -243,11 +249,10 @@ class MainViewModel : ViewModel() {
                     val data = dataSnapshot.getValue(UserModel::class.java)
                     Log.d("MainViewModel3", data.toString())
                     _userData.value = data!!
+
                 } catch (e: java.lang.Exception) {
                     Log.d("MainViewModel3", e.toString())
-
                 }
-
 
             }
 

@@ -8,9 +8,13 @@ class FireBaseRef {
         val database = Firebase.database
 
         val movieReview = database.getReference("movieReview")
+        val movieLike = database.getReference("movieLike")
         val userReview = database.getReference("userReview")
         val reviewLike = database.getReference("ReviewLike")
+        val myReviewLike = database.getReference("MyReviewLike")
         val userInfo = database.getReference("userInfo")
+        val userFindInfo = database.getReference("userFindInfo")
+
         val userMsgRef = database.getReference("userMsg")
         val emailCheck = database.getReference("emailCheck")
     }

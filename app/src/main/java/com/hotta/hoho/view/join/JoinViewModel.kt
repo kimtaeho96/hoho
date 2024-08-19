@@ -1,13 +1,12 @@
 package com.hotta.hoho.view.join
 
 import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -15,11 +14,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.hotta.hoho.repository.FireBaseRepository
-import com.hotta.hoho.utils.FireBaseAuthUtils
 import com.hotta.hoho.utils.FireBaseRef
-import com.hotta.hoho.view.detail.ReviewModel
-import com.hotta.hoho.view.main.MainActivity
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class JoinViewModel : ViewModel() {
@@ -63,24 +58,45 @@ class JoinViewModel : ViewModel() {
     }
 
     fun login(activity: Activity, email: String, password: String) = viewModelScope.launch {
-        try {
             auth = Firebase.auth
             Log.d("JoinViewModel1", email.toString())
             Log.d("JoinViewModel1", password.toString())
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity) { task ->
-                    Log.d("JoinViewModel1", password.toString())
-                    _loginResult.value = task.isSuccessful
+                        _loginResult.value = task.isSuccessful
+
                 }
-        } catch (e: Exception) {
-            Log.d("JoinViewModel3", e.toString())
-        }
+    }
 
+    fun accessEmail(activity: Activity,email: String, actionCodeSettings: ActionCodeSettings) = viewModelScope.launch {
+        auth = Firebase.auth
 
+        auth.sendSignInLinkToEmail(email, actionCodeSettings)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // 이메일 링크가 성공적으로 전송된 경우
+                    val actionCodeLink = task.result?.toString() // 링크 URL을 가져올 수 있음
+                    // 링크를 사용하여 후속 작업 처리
+                    Log.d("Auth", "이메일 링크 전송 성공: $actionCodeLink")
+                    // 이메일 링크를 저장하거나 사용자에게 알림을 보낼 수 있음
+                } else {
+                    // 오류 발생
+                    val exception = task.exception
+                    Log.e("AuthError", "이메일 링크 전송 실패: ${exception?.message}")
+                }
+            }
     }
 
     fun userDataInsert(uid: String, userModel: UserModel) = viewModelScope.launch {
         fireBaseRepository.insertUser(uid, userModel)
+    }
+    fun userFindDataInsert(userModel: UserModel) = viewModelScope.launch {
+        fireBaseRepository.insertFindUser(userModel)
+    }
+
+    fun emailCheck(email: String) = viewModelScope.launch {
+
+        fireBaseRepository.insertEmail(email)
     }
 
     fun emailCheck() = viewModelScope.launch {

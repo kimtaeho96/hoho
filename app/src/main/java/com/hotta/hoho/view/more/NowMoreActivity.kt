@@ -21,6 +21,7 @@ import com.google.android.material.navigation.NavigationView
 import com.hotta.hoho.R
 import com.hotta.hoho.databinding.ActivityMainBinding
 import com.hotta.hoho.databinding.ActivityNowMoreBinding
+import com.hotta.hoho.utils.FireBaseAuthUtils
 import com.hotta.hoho.view.more.paging.LoadMoreAdapter
 import com.hotta.hoho.view.more.paging.MovieAdapter
 import kotlinx.coroutines.flow.collect
@@ -32,6 +33,7 @@ class NowMoreActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
     lateinit var binding: ActivityNowMoreBinding
     lateinit var moviesAdapter: MovieAdapter
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var titleName: String
 
     private val viewModel: MoreViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +43,7 @@ class NowMoreActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
 
         val toolbar = binding.toolbar
+
         setSupportActionBar(toolbar)
         drawerLayout = binding.drawerLayout
 
@@ -56,11 +59,29 @@ class NowMoreActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
         val type = intent.getStringExtra("type").toString()
 
+
+
         Log.d("NowMoreActivity1", type)
 
         val headerView: View = navigationView.getHeaderView(0)
         val navName = headerView.findViewById<TextView>(R.id.nav_Name)
-        navName.setText("이건가용")
+
+        if (FireBaseAuthUtils.getUid() == "null") {
+            navName.setText("이건가용")
+
+        }
+
+        if (type == "now") {
+            titleName = "현재 상영작"
+        } else if (type == "pop") {
+            titleName = "인기 영화"
+        } else if (type == "top") {
+            titleName = "Top Rated"
+        } else {
+            titleName = "UpComing"
+        }
+        toolbar.title = titleName
+
 
         binding.rv.apply {
             layoutManager = GridLayoutManager(baseContext, 2)
@@ -94,50 +115,51 @@ class NowMoreActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
                 }
             }
 
-            lifecycleScope.launch {
-                moviesAdapter.loadStateFlow.collect {
-                    val state = it.refresh
-                    binding.prgBarMovies.isVisible = state is LoadState.Loading
-                }
-            }
 
-            binding.rv.adapter = moviesAdapter.withLoadStateFooter(LoadMoreAdapter {
-                moviesAdapter.retry()
-            })
         }
-    }
+        binding.rv.adapter = moviesAdapter.withLoadStateFooter(LoadMoreAdapter {
+            moviesAdapter.retry()
+        })
 
-        override fun onBackPressed() {
-            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                drawerLayout.closeDrawer(GravityCompat.START) // 네비게이션 드로어가 열려있는 경우 닫기
-            } else {
-                super.onBackPressed() // 네비게이션 드로어가 닫혀있는 경우 기본 뒤로 가기 동작 실행
-            }
-        }
-
-        override fun onOptionsItemSelected(item: MenuItem): Boolean {
-            when (item?.itemId) {
-                android.R.id.home -> {
-                    finish()
-                    return true
-                }
-
-                else -> {
-                    return super.onOptionsItemSelected(item)
-                }
-            }
-        }
-
-        override fun onNavigationItemSelected(item: MenuItem): Boolean {
-            when (item?.itemId) {
-                android.R.id.home -> {
-                    finish()
-                    return true
-                }
-
-                else -> {
-                    return super.onOptionsItemSelected(item)
-                }
+        lifecycleScope.launch {
+            moviesAdapter.loadStateFlow.collect {
+                val state = it.refresh
+                binding.prgBarMovies.isVisible = state is LoadState.Loading
             }
         }
     }
+
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START) // 네비게이션 드로어가 열려있는 경우 닫기
+        } else {
+            super.onBackPressed() // 네비게이션 드로어가 닫혀있는 경우 기본 뒤로 가기 동작 실행
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
+        }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
+        }
+    }
+}

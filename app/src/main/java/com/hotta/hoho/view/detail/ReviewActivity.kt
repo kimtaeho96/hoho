@@ -3,6 +3,7 @@ package com.hotta.hoho.view.detail
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DatabaseError
@@ -24,12 +26,16 @@ import com.hotta.hoho.databinding.ActivityReviewBinding
 import com.hotta.hoho.utils.FireBaseAuthUtils
 import com.hotta.hoho.utils.FireBaseRef
 import java.io.ByteArrayOutputStream
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class ReviewActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityReviewBinding
     private val viewModel: DetailViewModel by viewModels()
     lateinit var getId: String
+    lateinit var moveName: String
+    lateinit var posterPath: String
 
 
     lateinit var imgView: ImageView
@@ -37,9 +43,12 @@ class ReviewActivity : AppCompatActivity() {
     private var uid: String = ""
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val currentDate = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+        val current = currentDate.format(formatter)
 
         binding = ActivityReviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -95,6 +104,9 @@ class ReviewActivity : AppCompatActivity() {
 
         //리뷰를 작성하는 경우
         getId = intent.getStringExtra("id").toString()
+        moveName = intent.getStringExtra("moveName").toString()
+        posterPath = intent.getStringExtra("posterPath").toString()
+
 
         Log.d("ReviewActivity1", getId.toString())
         uid = FireBaseAuthUtils.getUid()
@@ -154,7 +166,7 @@ class ReviewActivity : AppCompatActivity() {
                     if (getModify != null) {
                         hashMap.put("goodBad", goodBadCheck)
                         hashMap.put("text", review)
-                        hashMap.put("time", "time")
+                        hashMap.put("time", current)
 
                         FireBaseRef.movieReview.child(getModify).child(FireBaseAuthUtils.getUid())
                             .updateChildren(hashMap)
@@ -170,7 +182,16 @@ class ReviewActivity : AppCompatActivity() {
                                 Log.i("firebase", "Got value ${it.value}")
                                 val name = it.value.toString()
                                 val reviewModel =
-                                    ReviewModel("time", name, uid, goodBadCheck, review, 0)
+                                    ReviewModel(
+                                        moveName,
+                                        posterPath,
+                                        current,
+                                        name,
+                                        uid,
+                                        goodBadCheck,
+                                        review,
+                                        0
+                                    )
                                 if (getModify != null) {
                                     getId = getModify
                                 }
@@ -217,6 +238,7 @@ class ReviewActivity : AppCompatActivity() {
 
         var uploadTask = mountainsRef.putBytes(data)
         uploadTask.addOnFailureListener {
+            Log.d("asdf", it.toString());
 
         }.addOnSuccessListener { taskSnapshot ->
 

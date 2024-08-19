@@ -2,8 +2,6 @@ package com.hotta.hoho.view.join
 
 import android.content.Intent
 import android.graphics.Typeface
-import android.os.Binder
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,28 +9,26 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
 import com.hotta.hoho.R
 import com.hotta.hoho.databinding.ActivityJoinBinding
 import com.hotta.hoho.utils.FireBaseAuthUtils
 import com.hotta.hoho.utils.FireBaseRef
 import com.hotta.hoho.utils.MLOG
 import com.hotta.hoho.view.main.MainActivity
+
 
 class JoinActivity : AppCompatActivity() {
     lateinit var binding: ActivityJoinBinding
@@ -86,20 +82,26 @@ class JoinActivity : AppCompatActivity() {
 
 
         binding.joinBtn.setOnClickListener {
-            val name = binding.nameInputEditText.text.toString()
+            Log.d("joinBtn", "clcick")
+
+            val nickName = binding.nameInputEditText.text.toString()
             val email = binding.emailInputEditText.text.toString()
+            val phone = binding.phoneInputEditText.text.toString()
+
             val pwd = binding.pwdInputEditText.text.toString()
             val type = "email"
-
-            val userModel = UserModel(name, email, type)
+            val emailKey = email.replace(".", ",")
+            val userModel = UserModel(nickName,phone, emailKey, type)
             try {
                 viewModel.join(this, email, pwd)
 
                 viewModel.joinResult.observe(this, Observer {
                     if (it) {
                         //회원정보를 DB에 저장````````````````````````````````````````
-
+                        viewModel.emailCheck(emailKey);
                         viewModel.userDataInsert(FireBaseAuthUtils.getUid(), userModel)
+                        viewModel.userFindDataInsert(userModel)
+
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -235,16 +237,21 @@ class JoinActivity : AppCompatActivity() {
                 when {
                     s.isEmpty() -> {
                         binding.pwdInputLayout.error = "비밀번호를 입력해주세요."
+                        binding.pwdInputLayout.errorIconDrawable=null
+
                         passwordFlag = false
                     }
 
                     !passwordRegex(s.toString()) -> {
                         binding.pwdInputLayout.error = "비밀번호 양식이 일치하지 않습니다."
+                        binding.pwdInputLayout.errorIconDrawable=null
+
                         passwordFlag = false
                     }
 
                     hasWhitespace(s.toString()) -> {
                         binding.pwdInputLayout.error = "공백을 제거해 주세요"
+                        binding.pwdInputLayout.errorIconDrawable=null
                         passwordFlag = false
                     }
 
@@ -271,22 +278,30 @@ class JoinActivity : AppCompatActivity() {
                 when {
                     s.isEmpty() -> {
                         binding.pwdCheckInputLayout.error = "비밀번호를 입력해주세요."
+                        binding.pwdCheckInputLayout.errorIconDrawable=null
+
                         passwordCheckFlag = false
                     }
 
                     pwd != s.toString() -> {
                         Log.d("pwd", pwd)
                         binding.pwdCheckInputLayout.error = "비밀번호가 다릅니다."
+                        binding.pwdCheckInputLayout.errorIconDrawable=null
+
                         passwordCheckFlag = false
                     }
 
                     hasWhitespace(s.toString()) -> {
                         binding.pwdCheckInputLayout.error = "공백을 제거해 주세요"
+                        binding.pwdCheckInputLayout.errorIconDrawable=null
+
                         idFlag = false
                     }
 
                     else -> {
                         binding.pwdCheckInputLayout.error = null
+                        binding.pwdCheckInputLayout.errorIconDrawable=null
+
                         passwordCheckFlag = true
                     }
                 }
@@ -296,6 +311,11 @@ class JoinActivity : AppCompatActivity() {
     }
 
     fun flagCheck() {
+        Log.d(
+            TAG,
+            "flagChekc : " + idFlag + ", " + passwordFlag + ", " + passwordCheckFlag + ", " + nameFlag
+        )
+
         binding.joinBtn.isEnabled = idFlag && passwordFlag && passwordCheckFlag && nameFlag
     }
 
@@ -322,7 +342,9 @@ class JoinActivity : AppCompatActivity() {
         val emailPassBtn = mDialogView.findViewById<Button>(R.id.emailUseBtn)
         emailBtn.setOnClickListener {
             MLOG.d(TAG, emailArea.text.toString())
-            FireBaseRef.emailCheck.orderByValue().equalTo(emailArea.text.toString())
+            val emailKey = emailArea.text.toString().replace(".", ",")
+
+            FireBaseRef.emailCheck.orderByValue().equalTo(emailKey)
                 .addListenerForSingleValueEvent(object :
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -394,7 +416,6 @@ class JoinActivity : AppCompatActivity() {
                         emailAreaLy.error = null
                         idFlag = true
                     }
-
                     flagCheck()
                 }
             }

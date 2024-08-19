@@ -24,7 +24,6 @@ class CreditMovieAdapter(val context: Context, val item: List<CreditsMovieResult
             val imgView = itemView.findViewById<ImageView>(R.id.creditImgView)
             val nameTv = itemView.findViewById<TextView>(R.id.creditName)
 
-
             nameTv.text = item.name
 
             Log.d("actorid", item.id.toString())

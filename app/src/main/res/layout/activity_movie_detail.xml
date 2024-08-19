@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,9 +27,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:title=" ">
 
+                <ImageView
+                    android:id="@+id/toolbar_move_like_img"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end"
+                    android:paddingEnd="16dp"
+                    android:src="@drawable/icons8_heart"/>
+
             </androidx.appcompat.widget.Toolbar>
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,13 +68,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
+
                             <ImageView
                                 android:id="@+id/imageView2"
-
                                 android:layout_width="match_parent"
                                 android:layout_height="300dp"
-
                                 app:layout_constraintTop_toTopOf="parent" />
+
+
 
                             <androidx.appcompat.widget.LinearLayoutCompat
                                 android:layout_width="match_parent"
@@ -275,7 +284,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             app:cardCornerRadius="5dp"
-                            app:strokeColor="#0000FF"
+                            app:strokeColor="@color/red"
                             app:strokeWidth="1dp">
 
                             <ScrollView
@@ -430,7 +439,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
-                                    android:text="최신순" />
+                                    android:text="최신순"
+                                    android:visibility="gone" />
 
                                 <TextView
                                     android:id="@+id/allReview"

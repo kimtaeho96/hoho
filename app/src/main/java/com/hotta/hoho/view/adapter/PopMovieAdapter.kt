@@ -15,10 +15,12 @@ import com.hotta.hoho.R
 import com.hotta.hoho.datamodel.PopularMovieResult
 import com.hotta.hoho.datamodel.PopularTvResult
 import com.hotta.hoho.view.detail.MovieDetailActivity
+import com.hotta.hoho.view.more.NowMoreActivity
 
 class PopMovieAdapter(
     val context: Context,
-    val item: List<PopularMovieResult>
+    val item: List<PopularMovieResult>,
+    val value:String
 
 ) :
     RecyclerView.Adapter<PopMovieAdapter.ViewHolder>() {
@@ -45,11 +47,19 @@ class PopMovieAdapter(
                 .fitCenter()
                 .into(imgView)
 
+            loadMoreButton.setOnClickListener {
+                val intent = Intent(context, NowMoreActivity::class.java)
+                intent.putExtra("type", value)
+                context.startActivity(intent)
+            }
+
         }
         fun showLoadMoreButton() {
             // 더보기 버튼을 보이도록 처리하는 로직
             loadMoreButton.visibility = View.VISIBLE
         }
+
+
 
         fun hideLoadMoreButton() {
             // 더보기 버튼을 숨기도록 처리하는 로직

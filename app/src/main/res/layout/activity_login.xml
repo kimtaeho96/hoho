@@ -16,6 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="40dp"
             android:orientation="horizontal">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,28 +66,31 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
+                android:inputType="text"
                 android:hint="이메일"
                 android:textSize="20dp" />
 
             <com.google.android.material.textfield.TextInputEditText
+
                 android:id="@+id/LoginPwdArea"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:inputType="textPassword"
-                app:endIconMode="password_toggle"
                 android:hint="비밀번호"
-                android:textSize="20dp" />
+                android:inputType="textPassword"
+                android:textSize="20dp"
+              />
 
-            <CheckBox
-                android:id="@+id/auto_login_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:text="자동로그인" />
 
-            <Button
+            <!--  <CheckBox
+                  android:id="@+id/auto_login_checkbox"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="50dp"
+                  android:text="자동로그인" />-->
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/loginBtn"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
@@ -94,9 +98,8 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/join_btn_radius"
                 android:text="로그인"
-                android:textSize="20dp"
-                android:textStyle="" />
-
+                android:textColor="@color/white"
+                android:textSize="20dp" />
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/btn_google_sign_in"
@@ -118,25 +121,26 @@
                 android:visibility="gone" />
 
             <LinearLayout
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:textColor="@color/gray">
 
-                <TextView
-                    android:id="@+id/IdFindBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ID/PW 찾기"
-                    android:textSize="20dp" />
+                <!--  <TextView
+                      android:id="@+id/IdFindBtn"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="ID/PW 찾기"
+                      android:textSize="20dp" />
 
-                <LinearLayout
-                    android:layout_width="2dp"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@color/gray" />
+                  <LinearLayout
+                      android:layout_width="2dp"
+                      android:layout_height="20dp"
+                      android:layout_marginLeft="20dp"
+                      android:layout_marginRight="20dp"
+                      android:background="@color/gray" />-->
 
                 <TextView
                     android:id="@+id/joinBtn"
@@ -148,10 +152,21 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/forget_pwd_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="비밀번호를 잊으셨나요?"
+                android:textSize="15dp" />
+
 
         </LinearLayout>
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -162,7 +177,7 @@
                 android:src="@color/black" />
 
         </LinearLayout>
-
+-->
 
     </LinearLayout>
 </LinearLayout>

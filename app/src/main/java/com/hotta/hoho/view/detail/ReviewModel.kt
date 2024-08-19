@@ -1,6 +1,8 @@
 package com.hotta.hoho.view.detail
 
 data class ReviewModel(
+    val movieName: String = "",
+    val posterPath: String = "",
     val time: String = "",
     val name: String = "",
     val userid: String = "",

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/find_nav"
+    app:startDestination="@id/emailFindFragment">
+
+    <fragment
+        android:id="@+id/emailFindFragment"
+        android:name="com.hotta.hoho.view.join.EmailFindFragment"
+        android:label="fragment_email_find"
+        tools:layout="@layout/fragment_email_find" >
+        <action
+            android:id="@+id/action_emailFindFragment_to_phoneFindFragment"
+            app:destination="@id/phoneFindFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/phoneFindFragment"
+        android:name="com.hotta.hoho.view.join.PhoneFindFragment"
+        android:label="fragment_phone_find"
+        tools:layout="@layout/fragment_phone_find" >
+        <action
+            android:id="@+id/action_phoneFindFragment_to_emailFindFragment"
+            app:destination="@id/emailFindFragment" />
+    </fragment>
+</navigation>

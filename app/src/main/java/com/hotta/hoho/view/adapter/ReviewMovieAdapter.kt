@@ -27,7 +27,6 @@ class ReviewMovieAdapter(
     val reviewLikeList: List<String>
 ) :
     RecyclerView.Adapter<ReviewMovieAdapter.ViewHolder>() {
-
     interface ItemClick {
         fun onClick(view: View, position: Int)
     }
@@ -78,12 +77,19 @@ class ReviewMovieAdapter(
             var hashMap = HashMap<String, Any>()
 
             mountainsRef.downloadUrl.addOnCompleteListener { task ->
+                Log.d("downloadUrl", "downloadUrl $task")
                 if (task.isSuccessful) {
                     imageView.visibility = View.VISIBLE
-                    Glide.with(context /* context */).load(task.result).into(imageView)
+                    Glide.with(context).load(task.result).into(imageView)
                 } else {
                     imageView.visibility = View.GONE
                 }
+            }
+
+            mountainsRef.downloadUrl.addOnSuccessListener {
+                // Got the download URL for 'users/me/profile.png'
+            }.addOnFailureListener {
+
             }
 
             likeImg.setOnClickListener {
@@ -100,9 +106,15 @@ class ReviewMovieAdapter(
                             .updateChildren(hashMap)
                     }
 
-                    FireBaseRef.reviewLike.child(FireBaseAuthUtils.getUid()).child(key)
+
+
+                    FireBaseRef.reviewLike.child(movieId).child(key)
+                        .child(FireBaseAuthUtils.getUid())
                         .removeValue()
 
+                    FireBaseRef.myReviewLike.child(movieId).child(FireBaseAuthUtils.getUid())
+                        .child(key)
+                        .removeValue()
 
                 } else {
                     count++
@@ -115,8 +127,16 @@ class ReviewMovieAdapter(
                     FireBaseRef.userReview.child(item.userid).child(movieId)
                         .updateChildren(hashMap as Map<String, Any>)
 
-                    FireBaseRef.reviewLike.child(FireBaseAuthUtils.getUid()).child(key)
+                    FireBaseRef.reviewLike.child(movieId).child(key)
+                        .child(FireBaseAuthUtils.getUid())
                         .setValue(ReviewLkeModel(true))
+
+                    FireBaseRef.reviewLike.child(movieId).child(key)
+                        .child(FireBaseAuthUtils.getUid())
+                        .setValue(ReviewLkeModel(true))
+
+                    FireBaseRef.myReviewLike.child(movieId).child(FireBaseAuthUtils.getUid())
+                        .child(key).setValue(ReviewLkeModel(true))
                 }
             }
 

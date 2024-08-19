@@ -66,6 +66,16 @@ class MovieDetailActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private var isLatestOrder = true
 
+    private var moveName: String = ""
+    private var posterPath: String = ""
+
+    private var moveLikeCheck = false;
+
+    override fun onResume() {
+        super.onResume()
+        viewModel2.selectReviewData(getId);
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -122,7 +132,13 @@ class MovieDetailActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             genreList = ArrayList()
             for (item in it) {
                 binding.title.text = item.title
-                binding.story.text = item.overview
+                Log.d("item.overview", item.overview?.isEmpty().toString())
+
+                if (item.overview?.isEmpty() == true){
+                    binding.story.text = "줄거리 없음"
+                }else{
+                    binding.story.text = item.overview
+                }
 
                 for (gener in item.genres) {
                     Log.d("gener", gener.name.toString())
@@ -141,6 +157,8 @@ class MovieDetailActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                     /* .transform(CenterCrop())*/
                     .fitCenter()
                     .into(binding.imageView3)
+                moveName = item.title
+                posterPath = item.poster_path.toString()
 
                 binding.enTitle.text = item.original_title
                 // binding.bigTitle.text = item.title
@@ -148,7 +166,40 @@ class MovieDetailActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 val genres = genreList!!.joinToString(", ")
                 binding.genres.text = genres
 
+                viewModel2.getMovieLikeData(getId)
 
+                viewModel2.movieLikeData.observe(this) {
+
+                    if (it.equals(getId)) {
+                        moveLikeCheck = true
+                        binding.toolbarMoveLikeImg.setImageResource(R.drawable.icons8_heart_fill)
+                    } else {
+                        moveLikeCheck = false
+                        binding.toolbarMoveLikeImg.setImageResource(R.drawable.icons8_heart)
+                    }
+                }
+
+
+                binding.toolbarMoveLikeImg.setOnClickListener {
+                    if (FireBaseAuthUtils.getUid() != "null") {
+                        moveLikeCheck = !moveLikeCheck
+                        if (moveLikeCheck) {
+                            binding.toolbarMoveLikeImg.setImageResource(R.drawable.icons8_heart_fill)
+
+                            viewModel2.insertLikeMovie(getId)
+                            Toast.makeText(this, "좋아요.", Toast.LENGTH_SHORT).show()
+
+
+                        } else {
+                            binding.toolbarMoveLikeImg.setImageResource(R.drawable.icons8_heart)
+                            FireBaseRef.movieLike.child(FireBaseAuthUtils.getUid()).child(getId)
+                                .removeValue()
+                        }
+                    } else {
+                        Toast.makeText(this, "로그인 후 이용해 주세요", Toast.LENGTH_SHORT).show()
+
+                    }
+                }
 
                 binding.runtime.text = item.runtime.toString()
                 binding.releaseDate.text = item.release_date
@@ -201,25 +252,20 @@ class MovieDetailActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         binding.reviewBtn.setOnClickListener {
 
-            /*if (FireBaseAuthUtils.getUid() != "null") {
+            if (FireBaseAuthUtils.getUid() != "null") {
                 if (check) {
-                     val intent = Intent(this, ReviewActivity::class.java)
-                     intent.putExtra("id", getId)
-                     startActivity(intent)
+                    val intent = Intent(this, ReviewActivity::class.java)
+                    intent.putExtra("id", getId)
+                    intent.putExtra("moveName", moveName)
+                    intent.putExtra("posterPath", posterPath)
+                    startActivity(intent)
                 } else {
-                     Toast.makeText(this, "이미 리뷰를 작성하였습니다.", Toast.LENGTH_SHORT).show()
-
+                    Toast.makeText(this, "이미 리뷰를 작성하였습니다.", Toast.LENGTH_SHORT).show()
                 }
-                val intent = Intent(this, ReviewActivity::class.java)
-                intent.putExtra("id", getId)
-                startActivity(intent)
+
             } else {
                 Toast.makeText(this, "로그인후 이용할수있습니다.", Toast.LENGTH_SHORT).show()
-            }*/
-
-            val intent = Intent(this, ReviewActivity::class.java)
-            intent.putExtra("id", getId)
-            startActivity(intent)
+            }
         }
 
         binding.allReview.setOnClickListener {
@@ -227,14 +273,17 @@ class MovieDetailActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         }
 
-        viewModel2.selectReviewLikeData()
+        viewModel2.selectReviewLikeData(getId)
         viewModel2.reviewLikeData.observe(this, Observer {
             allList = ArrayList()
             goodList = ArrayList()
             badList = ArrayList()
-            //좋아용한 데이터를 가져온다.
+            //내가 좋아요 한글의 UID 값
+
+
             reviewLikeList = it as MutableList<String>
 
+            Log.d("TAG", "reviewLikeList : $it")
 
             //작성된 리뷰를 가져온다.
             viewModel2.selectReviewData(getId)
@@ -247,14 +296,14 @@ class MovieDetailActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 goodList.clear()
                 badList.clear()
 
+                allReviewKeyList.clear()
+
                 for (item in it) {
                     if (item.userid == FireBaseAuthUtils.getUid()) {
                         check = false
                     }
 
-                    //
                     allReviewKeyList?.add(item.userid)
-
 
                     allList.add(item)
                     if (item.goodBad == "good") {
@@ -266,7 +315,6 @@ class MovieDetailActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                     }
 
                 }
-
 
                 if (dialogCheck == 0) {
                     reviewCount.setText(it.size.toString())
@@ -292,30 +340,40 @@ class MovieDetailActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                         val correction = view.findViewById<TextView>(R.id.correction)
                         val delete = view.findViewById<TextView>(R.id.deleteTv)
 
+
                         correction.setOnClickListener {
                             Toast.makeText(baseContext, "수정 클릭", Toast.LENGTH_SHORT).show()
                             val intent = Intent(baseContext, ReviewActivity::class.java)
                             intent.putExtra("수정", getId)
                             startActivity(intent)
 
-
                         }
+
                         delete.setOnClickListener {
+                            var storage = Firebase.storage
+                            val storageRef = storage.reference
                             Toast.makeText(baseContext, "삭제 클릭.", Toast.LENGTH_SHORT).show()
 
                             FireBaseRef.movieReview.child(getId)
                                 .child(FireBaseAuthUtils.getUid())
                                 .removeValue()
+                            FireBaseRef.userReview.child(FireBaseAuthUtils.getUid())
+                                .child(getId)
+                                .removeValue()
+                            FireBaseRef.reviewLike.child(getId).child(FireBaseAuthUtils.getUid())
+                                .removeValue()
 
-                            var storage = Firebase.storage
-                            val storageRef = storage.reference
+                            FireBaseRef.myReviewLike.child(getId).child(FireBaseAuthUtils.getUid())
+                                .removeValue()
+
                             val mountainsRef =
                                 storageRef.child(getId)
                                     .child(FireBaseAuthUtils.getUid() + ".png")
                             mountainsRef.delete().addOnSuccessListener {
-                                check = true
                             }.addOnFailureListener {
                             }
+                            check = true
+
                         }
                     }
                 }
@@ -337,8 +395,7 @@ class MovieDetailActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                             this,
                             sortedList,
                             getId,
-                            allReviewKeyList,
-                            reviewLikeList
+                            allReviewKeyList, reviewLikeList
                         )
                     //좋았어요 좋아요순
                 } else if (dialogCheck == 1) {
@@ -348,8 +405,7 @@ class MovieDetailActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                             this,
                             sortedList,
                             getId,
-                            goodReviewKeyList,
-                            reviewLikeList
+                            goodReviewKeyList, reviewLikeList
                         )
 
 
@@ -361,8 +417,7 @@ class MovieDetailActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                             this,
                             sortedList,
                             getId,
-                            badReviewKeyList,
-                            reviewLikeList
+                            badReviewKeyList, reviewLikeList
                         )
                 }
                 isLatestOrder = false
